@@ -16,11 +16,12 @@ public class MailService {
     void sendMail(Mail mail) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setTo(mail.recipient);
             mimeMessageHelper.setSubject(mail.subject);
             mimeMessageHelper.setText(mail.content);
+            mimeMessageHelper.addAttachment(mail.attachment.getOriginalFilename(), mail.attachment);
 
             javaMailSender.send(mimeMessage);
         } catch (Exception e) {
