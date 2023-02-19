@@ -1,0 +1,28 @@
+<!DOCTYPE>
+<html lang="pl">
+<head>
+    <title>Skrzynka odbiorcza</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+
+    <h3>Skrzynka odbiorcza</h3>
+
+    <div th:each="mail : ${mails}">
+        <div th:text="${mail.getRecipient()}"></div>
+        <div th:text="${mail.getSubject()}"></div>
+        <hr/>
+    </div>
+
+    <div class="text-right">
+        <a th:href="@{/mails}" class="btn btn-primary">Wróć do wysyłania mejla</a>
+    </div>
+
+
+</div>
+
+</body>
+</html>

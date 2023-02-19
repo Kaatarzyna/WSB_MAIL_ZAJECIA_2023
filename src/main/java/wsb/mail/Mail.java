@@ -16,4 +16,9 @@ public class Mail {
 
     MultipartFile attachment;
 
+    public Mail(String from, String subject) {
+        this.recipient = from;
+        this.subject = subject;
+    }
+
 }

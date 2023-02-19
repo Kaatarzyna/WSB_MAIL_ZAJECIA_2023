@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,7 +35,7 @@ public class MailService {
         }
     }
 
-    Message[] receiveMails() throws MessagingException {
+    List<Mail> receiveMails() throws MessagingException {
         Properties props = mailConfig.getMailConfig();
         Authenticator auth = mailConfig.getAuthenticator();
 
@@ -46,13 +48,16 @@ public class MailService {
         inbox.open(Folder.READ_ONLY);
 
         Message[] messages = inbox.getMessages();
-
-        // TODO zmapować message na mail
+        List<Mail> receivedMails = new LinkedList<>();
+        for(Message message : messages) {
+            Mail mail = new Mail(Arrays.toString(message.getFrom()), message.getSubject());
+            receivedMails.add(mail);
+        }
 
         inbox.close(false);
         store.close();
 
-        return messages;
+        return receivedMails;
     }
 
 }
