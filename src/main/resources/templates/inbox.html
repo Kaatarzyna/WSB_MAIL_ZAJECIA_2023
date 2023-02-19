@@ -14,6 +14,7 @@
     <div th:each="mail : ${mails}">
         <div th:text="${mail.getRecipient()}"></div>
         <div th:text="${mail.getSubject()}"></div>
+        <div th:text="${mail.getContent}"></div>
         <hr/>
     </div>
 

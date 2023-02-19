@@ -16,9 +16,10 @@ public class Mail {
 
     MultipartFile attachment;
 
-    public Mail(String from, String subject) {
+    public Mail(String from, String subject, String content) {
         this.recipient = from;
         this.subject = subject;
+        this.content = content;
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -28,7 +29,7 @@ public class MailController {
     }
 
     @GetMapping("/inbox")
-    ModelAndView receiveMails() throws MessagingException {
+    ModelAndView receiveMails() throws MessagingException, IOException {
         List<Mail> mails = mailService.receiveMails();
 
         ModelAndView modelAndView = new ModelAndView("inbox");

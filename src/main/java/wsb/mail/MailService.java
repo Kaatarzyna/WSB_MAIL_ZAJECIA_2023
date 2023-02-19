@@ -2,11 +2,13 @@ package wsb.mail;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class MailService {
         }
     }
 
-    List<Mail> receiveMails() throws MessagingException {
+    List<Mail> receiveMails() throws MessagingException, IOException {
         Properties props = mailConfig.getMailConfig();
         Authenticator auth = mailConfig.getAuthenticator();
 
@@ -49,8 +51,8 @@ public class MailService {
 
         Message[] messages = inbox.getMessages();
         List<Mail> receivedMails = new LinkedList<>();
-        for(Message message : messages) {
-            Mail mail = new Mail(Arrays.toString(message.getFrom()), message.getSubject());
+        for (Message message : messages) {
+            Mail mail = new Mail(Arrays.toString(message.getFrom()), message.getSubject(), getTextFromMimeMultipart((MimeMultipart) message.getContent()));
             receivedMails.add(mail);
         }
 
@@ -58,6 +60,21 @@ public class MailService {
         store.close();
 
         return receivedMails;
+    }
+
+    String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws MessagingException, IOException {
+        StringBuilder result = new StringBuilder();
+        int count = mimeMultipart.getCount();
+        for (int i = 0; i < count; i++) {
+            BodyPart bodyPart = mimeMultipart.getBodyPart(i);
+            if (bodyPart.isMimeType("text/plain")) {
+                result.append(bodyPart.getContent());
+            } else if (bodyPart.getContent() instanceof MimeMultipart) {
+                result.append(getTextFromMimeMultipart((MimeMultipart) bodyPart.getContent()));
+            }
+        }
+
+        return result.toString();
     }
 
 }
