@@ -26,6 +26,9 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-mail
+	implementation group: 'org.springframework.integration', name: 'spring-integration-mail', version: '6.0.2'
+
 }
 
 tasks.named('test') {
